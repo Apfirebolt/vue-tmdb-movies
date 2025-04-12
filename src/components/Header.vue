@@ -62,6 +62,7 @@ const menuItems = [
   { name: "Home", path: "/" },
   { name: "About", path: "/about" },
   { name: "Movie", path: "/movie" },
+  { name: "Person", path: "/person" },
 ];
 
 const toggleSidebar = () => {
