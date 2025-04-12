@@ -1,105 +1,173 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand fw-bold" href="#">VUE MOVIES</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        @click="toggleSidebar"
-        aria-controls="offcanvasMenu"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
+  <div>
+    <nav class="vertical-navbar" v-if="!isSmallScreen">
+      <div class="navbar-container">
+        <ul class="navbar-nav">
           <li v-for="item in menuItems" :key="item.path" class="nav-item">
-            <router-link :to="item.path" class="nav-link">{{
-              item.name
-            }}</router-link>
+            <router-link :to="item.path" class="nav-link p-2 my-1">
+              <font-awesome-icon :icon="item.icon" class="nav-icon" />
+              {{ item.name }}
+            </router-link>
           </li>
         </ul>
       </div>
-    </div>
-  </nav>
-
-  <div
-    class="offcanvas offcanvas-start"
-    :class="{ show: isSidebarOpen }"
-    tabindex="-1"
-    id="offcanvasMenu"
-    style="visibility: visible; transition: transform 0.3s ease-in-out"
-    :style="{
-      transform: isSidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
-    }"
-  >
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title">Vue News</h5>
-      <button
-        type="button"
-        class="btn-close text-reset"
-        @click="toggleSidebar"
-      ></button>
-    </div>
-    <div class="offcanvas-body">
-      <ul class="list-unstyled">
-        <li v-for="item in menuItems" :key="item.path">
-          <router-link :to="item.path" class="nav-link">{{
-            item.name
-          }}</router-link>
-        </li>
-      </ul>
+    </nav>
+    <div v-else>
+      <i class="menu-icon" @click="toggleSidebar">
+        <font-awesome-icon icon="fa-solid fa-bars" />
+      </i>
+      <nav class="mobile-sidebar" :class="{ open: isSidebarOpen }">
+        <div class="mobile-navbar-container">
+          <ul class="mobile-navbar-nav">
+            <li v-for="item in menuItems" :key="item.path" class="mobile-nav-item">
+              <router-link :to="item.path" class="mobile-nav-link" @click="closeSidebar">
+                <font-awesome-icon :icon="item.icon" class="mobile-nav-icon" />
+                {{ item.name }}
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </nav>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faHome, faInfoCircle, faFilm, faUser, faBars } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
 
-const isSidebarOpen = ref(false);
+// Add icons to the library
+library.add(faHome, faInfoCircle, faFilm, faUser, faBars);
+
 const menuItems = [
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
-  { name: "Movie", path: "/movie" },
-  { name: "Person", path: "/person" },
+  { name: "Home", path: "/", icon: "fa-home" },
+  { name: "About", path: "/about", icon: "fa-info-circle" },
+  { name: "Movie", path: "/movie", icon: "fa-film" },
+  { name: "Person", path: "/person", icon: "fa-user" },
 ];
+
+const isSmallScreen = ref(false);
+const isSidebarOpen = ref(false);
+
+const updateScreenSize = () => {
+  isSmallScreen.value = window.innerWidth <= 768;
+};
 
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
+
+const closeSidebar = () => {
+  isSidebarOpen.value = false;
+};
+
+onMounted(() => {
+  updateScreenSize();
+  window.addEventListener("resize", updateScreenSize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateScreenSize);
+});
 </script>
 
 <style scoped>
-.offcanvas {
+/* Styles remain unchanged */
+.vertical-navbar {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 10%;
   background-color: #282f69;
   color: #fff;
-  width: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-sidebar {
   position: fixed;
   top: 0;
-  left: 0;
+  left: -100%;
+  width: 50%;
   height: 100%;
-  overflow-y: auto;
+  background-color: #282f69;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   z-index: 1050;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  transition: left 0.3s ease;
 }
 
-.offcanvas-header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+.mobile-sidebar.open {
+  left: 0;
 }
 
-.offcanvas-body {
-  padding: 1rem;
+.navbar-container,
+.mobile-navbar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
-.nav-link {
+.navbar-nav,
+.mobile-navbar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.nav-item,
+.mobile-nav-item {
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+.nav-link,
+.mobile-nav-link {
   color: #fff !important;
+  text-decoration: none;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
 }
 
-.navbar-brand {
+.nav-link:hover,
+.mobile-nav-link:hover {
+  color: #00bcd4 !important;
+  background: #330033;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.nav-icon,
+.mobile-nav-icon {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.menu-icon {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
   font-size: 1.5rem;
-}
-
-.offcanvas-title {
-  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  z-index: 1100;
 }
 </style>
