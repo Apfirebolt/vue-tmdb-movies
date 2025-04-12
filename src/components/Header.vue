@@ -14,11 +14,10 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <router-link to="/" class="nav-link">Home</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/about" class="nav-link">About</router-link>
+          <li v-for="item in menuItems" :key="item.path" class="nav-item">
+            <router-link :to="item.path" class="nav-link">{{
+              item.name
+            }}</router-link>
           </li>
         </ul>
       </div>
@@ -45,15 +44,10 @@
     </div>
     <div class="offcanvas-body">
       <ul class="list-unstyled">
-        <li class="mb-2">
-          <router-link to="/" class="text-white text-decoration-none"
-            >Home</router-link
-          >
-        </li>
-        <li>
-          <router-link to="/about" class="text-white text-decoration-none"
-            >About</router-link
-          >
+        <li v-for="item in menuItems" :key="item.path">
+          <router-link :to="item.path" class="nav-link">{{
+            item.name
+          }}</router-link>
         </li>
       </ul>
     </div>
@@ -64,6 +58,11 @@
 import { ref } from "vue";
 
 const isSidebarOpen = ref(false);
+const menuItems = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Movie", path: "/movie" },
+];
 
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;

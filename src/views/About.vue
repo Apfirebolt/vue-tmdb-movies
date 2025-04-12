@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-4">
+  <div class="container mt-4 p-3">
     <h1>About Us</h1>
     <p>
       Welcome to our News App! This application is built using Vue.js and
@@ -37,5 +37,7 @@ const showModal = ref(false);
 .modal.show {
   display: block;
   background-color: rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease-in-out;
+  z-index: 1050;
 }
 </style>
