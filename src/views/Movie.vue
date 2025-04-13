@@ -1,12 +1,24 @@
 <template>
   <div class="container">
     <div
-      class="hero-section text-center text-white d-flex flex-column justify-content-center align-items-center"
+      class="hero-section text-center text-white d-flex flex-column justify-content-center align-items-center mb-4"
     >
       <h1 class="bg-primary px-3 py-2 rounded w-100">Movies</h1>
       <p class="px-3 py-2 rounded">
         This page lists all popular movies from the API
       </p>
+      <div class="search-bar w-100 d-flex align-items-center">
+        <div class="input-group">
+          <span class="input-group-text">
+            <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
+          </span>
+          <input type="text" class="form-control" placeholder="Search for a movie..." v-model="searchQuery" />
+        </div>
+        <button class="btn btn-primary d-flex align-items-center" @click="searchMovie">
+          <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" class="me-2 text-black" />
+          Search
+        </button>
+      </div>
     </div>
 
     <Loader v-if="isLoading" />
@@ -31,7 +43,7 @@
       </div>
     </div>
 
-    <div class="d-flex justify-content-between my-3">
+    <div class="d-flex justify-content-center my-3">
       <button
         class="btn btn-primary"
         @click="goToPreviousPage"
@@ -39,30 +51,51 @@
       >
         Previous
       </button>
-      <button class="btn btn-primary" @click="goToNextPage">Next</button>
+      <button class="btn mx-2 btn-primary" @click="goToNextPage">Next</button>
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faSearch, faArrowCircleLeft, faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
 import { useMovieStore } from "../stores/movie";
 import Loader from "../components/Loader.vue";
 
 const movieStore = useMovieStore();
 const currentPage = ref(1);
+const searchQuery = ref("");
+library.add(faSearch, faArrowCircleLeft, faArrowAltCircleRight);
 
 const isLoading = computed(() => movieStore.isLoading);
 const movieData = computed(() => movieStore.getMovieData);
 
 const goToNextPage = () => {
   currentPage.value++;
-  movieStore.getPopularMovies(currentPage.value);
+  if (searchQuery.value) {
+    movieStore.searchMovie(searchQuery.value, currentPage.value);
+  } else {
+    movieStore.getPopularMovies(currentPage.value);
+  }
 };
 
 const goToPreviousPage = () => {
   if (currentPage.value > 1) {
     currentPage.value--;
+    if (searchQuery.value) {
+      movieStore.searchMovie(searchQuery.value, currentPage.value);
+    } else {
+      movieStore.getPopularMovies(currentPage.value);
+    }
+  }
+};
+
+const searchMovie = () => {
+  if (searchQuery.value) {
+    movieStore.searchMovie(searchQuery.value, currentPage.value);
+  } else {
     movieStore.getPopularMovies(currentPage.value);
   }
 };

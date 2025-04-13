@@ -4,7 +4,7 @@
       <div class="navbar-container">
         <ul class="navbar-nav">
           <li v-for="item in menuItems" :key="item.path" class="nav-item">
-            <router-link :to="item.path" class="nav-link p-2 my-1">
+            <router-link :to="item.path" class="nav-link my-1">
               <font-awesome-icon :icon="item.icon" class="nav-icon" />
               {{ item.name }}
             </router-link>
@@ -128,7 +128,6 @@ onUnmounted(() => {
 
 .nav-item,
 .mobile-nav-item {
-  margin: 0.5rem 0;
   text-align: center;
 }
 
@@ -140,16 +139,15 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 0;
+  padding: 1rem 0;
   transition: color 0.3s ease;
 }
 
 .nav-link:hover,
 .mobile-nav-link:hover {
   color: #00bcd4 !important;
-  background: #330033;
+  background: #222222;
   transition: all 0.3s ease;
-  border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 

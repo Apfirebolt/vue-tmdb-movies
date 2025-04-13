@@ -115,6 +115,19 @@ export const useMovieStore = defineStore("movie", {
       }
     },
 
+    async searchMovie (search = "", page = 1) {
+      try {
+        this.loading = true;
+        const response = await httpClient.get(`search/movie?api_key=${import.meta.env.VITE_APP_KEY}&query=${search}&page=${page}`);
+        this.movieData = response.data;
+      } catch (error) {
+        console.log(error);
+        return error;
+      } finally {
+        this.loading = false;
+      }
+    },
+
     resetUrlData() {
       this.movie = [];
     },

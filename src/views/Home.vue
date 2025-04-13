@@ -31,10 +31,24 @@
 
 <script setup>
 import { computed, onMounted } from "vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faSearch, faArrowCircleLeft, faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
 import { useMovieStore } from "../stores/movie";
 import Loader from "../components/Loader.vue";
 
 const movieStore = useMovieStore();
+const searchQuery = ref("");
+library.add(faSearch, faArrowCircleLeft, faArrowAltCircleRight);
+const currentPage = ref(1);
+const goToNextPage = () => {
+  currentPage.value++;
+  if (searchQuery.value) {
+    movieStore.getMovieAction(searchQuery.value, currentPage.value);
+  } else {
+    movieStore.getLatestMovies(currentPage.value);
+  }
+};
 
 const isLoading = computed(() => movieStore.isLoading);
 const movie = computed(() => movieStore.movie);

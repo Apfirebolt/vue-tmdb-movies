@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer">
+  <footer class="footer bg-secondary text-white">
     <div class="container p-4">
       <div class="features">
         <div class="row">
@@ -60,8 +60,6 @@ const currentYear = ref(new Date().getFullYear());
 
 <style scoped>
 .footer {
-  background-color: #333;
-  color: #fff;
   padding: 20px 0;
   text-align: center;
 }
