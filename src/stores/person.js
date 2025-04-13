@@ -37,6 +37,21 @@ export const usePersonStore = defineStore("person", {
       }
     },
 
+    async getPersonAction(search = "", page = 1) {
+      try {
+        this.loading = true;
+        const response = await httpClient.get(
+          `search/person?api_key=${import.meta.env.VITE_APP_KEY}&query=${search}&page=${page}`
+        );
+        this.personData = response.data;
+      } catch (error) {
+        console.log(error);
+        return error;
+      } finally {
+        this.loading = false;
+      }
+    },
+
     async getPopularPersons(page = 1) {
       try {
         this.loading = true;

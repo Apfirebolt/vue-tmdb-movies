@@ -35,17 +35,18 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faHome, faInfoCircle, faFilm, faUser, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faInfoCircle, faFilm, faUser, faBars, faSearchLocation } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 
 // Add icons to the library
-library.add(faHome, faInfoCircle, faFilm, faUser, faBars);
+library.add(faHome, faInfoCircle, faFilm, faUser, faBars, faSearchLocation);
 
 const menuItems = [
   { name: "Home", path: "/", icon: "fa-home" },
   { name: "About", path: "/about", icon: "fa-info-circle" },
   { name: "Movie", path: "/movie", icon: "fa-film" },
   { name: "Person", path: "/person", icon: "fa-user" },
+  { name: "Discover", path: "/discover", icon: "fa-search-location" },
 ];
 
 const isSmallScreen = ref(false);

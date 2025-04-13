@@ -50,6 +50,19 @@ export const useMovieStore = defineStore("movie", {
       }
     },
 
+    async getNowPlayingMovies (page = 1, region = "US", language = "en-US") {
+      try {
+        this.loading = true;
+        const response = await httpClient.get(`movie/now_playing?api_key=${import.meta.env.VITE_APP_KEY}&region=${region}&language=${language}&page=${page}`);
+        this.movieData = response.data;
+      } catch (error) {
+        console.log(error);
+        return error;
+      } finally {
+        this.loading = false;
+      }
+    },
+
     async getPopularMovies (page = 1) {
       try {
         this.loading = true;
