@@ -94,10 +94,7 @@
         <ul class="nav nav-tabs" id="movieDetailsTab" role="tablist">
           <li class="nav-item" role="presentation">
             <button
-              :class="[
-                'nav-link',
-                selectedTab === 'images' ? 'active' : '',
-              ]"
+              :class="['nav-link', selectedTab === 'images' ? 'active' : '']"
               id="images-tab"
               data-bs-toggle="tab"
               data-bs-target="#images"
@@ -106,17 +103,13 @@
               aria-controls="images"
               aria-selected="true"
               @click="selectTab('images')"
-
             >
               Images
             </button>
           </li>
           <li class="nav-item" role="presentation">
             <button
-              :class="[
-                'nav-link',
-                selectedTab === 'videos' ? 'active' : '',
-              ]"
+              :class="['nav-link', selectedTab === 'videos' ? 'active' : '']"
               id="videos-tab"
               data-bs-toggle="tab"
               data-bs-target="#videos"
@@ -131,10 +124,7 @@
           </li>
           <li class="nav-item" role="presentation">
             <button
-              :class="[
-                'nav-link',
-                selectedTab === 'reviews' ? 'active' : '',
-              ]"
+              :class="['nav-link', selectedTab === 'reviews' ? 'active' : '']"
               id="reviews-tab"
               data-bs-toggle="tab"
               data-bs-target="#reviews"
@@ -167,10 +157,7 @@
           </li>
           <li class="nav-item" role="presentation">
             <button
-              :class="[
-                'nav-link',
-                selectedTab === 'providers' ? 'active' : '',
-              ]"
+              :class="['nav-link', selectedTab === 'providers' ? 'active' : '']"
               id="providers-tab"
               data-bs-toggle="tab"
               data-bs-target="#providers"
@@ -184,6 +171,54 @@
             </button>
           </li>
         </ul>
+      </div>
+
+       <!-- Slideshow for trailers -->
+       <div
+        v-if="
+          selectedTab === 'videos' &&
+          movieVideos.results &&
+          movieVideos.results.length >= 2
+        "
+        id="videoCarousel"
+        class="carousel slide mt-4"
+        data-bs-ride="carousel"
+      >
+        <div class="carousel-inner">
+          <div
+            v-for="(video, index) in movieVideos.results"
+            :key="index"
+            :class="['carousel-item', { active: index === 0 }]"
+          >
+            <iframe
+              v-if="video.site === 'YouTube'"
+              :src="'https://www.youtube.com/embed/' + video.key"
+              class="d-block mx-auto"
+              style="max-height: 600px; width: 750px"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#videoCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#videoCarousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
 
       <div v-if="selectedTab === 'videos'" class="col-12 mt-4">
@@ -216,6 +251,51 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!--Slideshow for posters-->
+      <div
+        v-if="
+          selectedTab === 'images' &&
+          movieImages.posters &&
+          movieImages.posters.length >= 2
+        "
+        id="imageCarousel"
+        class="carousel slide mt-4"
+        data-bs-ride="carousel"
+      >
+        <div class="carousel-inner">
+          <div
+            v-for="(image, index) in movieImages.posters"
+            :key="index"
+            :class="['carousel-item', { active: index === 0 }]"
+          >
+            <img
+              :src="'https://image.tmdb.org/t/p/w500' + image.file_path"
+              class="d-block mx-auto"
+              style="max-height: 500px; width: 650px"
+              :alt="'Image ' + (index + 1)"
+            />
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#imageCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#imageCarousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
 
       <div v-if="selectedTab === 'images'" class="col-12 mt-4">
