@@ -4,14 +4,17 @@ import httpClient from "../plugins/interceptor";
 
 export const useDiscoverStore = defineStore("discover", {
   state: () => ({
-    discover: ref([]),
-    discoverData: ref({}),
+    movies: ref({}),
+    shows: ref({}),
     loading: ref(false),
   }),
 
   getters: {
-    getDiscover() {
-      return this.discover;
+    getMovies() {
+      return this.movies;
+    },
+    getShows() {
+      return this.shows;
     },
     isLoading() {
       return this.loading;
@@ -22,15 +25,13 @@ export const useDiscoverStore = defineStore("discover", {
   },
 
   actions: {
-    async getDiscoverAction(payload) {
+    async discoverMovies(payload) { 
       try {
         this.loading = true;
         const response = await httpClient.get(
-          `discover?query=${payload.query}&apiKey=${
-            import.meta.env.VITE_APP_KEY
-          }`
+          `discover/movie?year=${payload.year}&page=${payload.page}&api_key=${import.meta.env.VITE_APP_KEY}`
         );
-        this.discover = response.data.results;
+        this.movies = response.data;
       } catch (error) {
         console.log(error);
         return error;
@@ -39,80 +40,13 @@ export const useDiscoverStore = defineStore("discover", {
       }
     },
 
-    async getLatestDiscover() {
+    async discoverShows(payload) {
       try {
         this.loading = true;
         const response = await httpClient.get(
-          `discover/latest?api_key=${import.meta.env.VITE_APP_KEY}`
+          `discover/tv?query=${payload.query}&api_key=${import.meta.env.VITE_APP_KEY}`
         );
-        console.log(response.data);
-        this.discover = response.data;
-      } catch (error) {
-        console.log(error);
-        return error;
-      } finally {
-        this.loading = false;
-      }
-    },
-
-    async getPopularDiscover(page = 1) {
-      try {
-        this.loading = true;
-        const response = await httpClient.get(
-          `discover/popular?api_key=${
-            import.meta.env.VITE_APP_KEY
-          }&page=${page}`
-        );
-        this.discoverData = response.data;
-      } catch (error) {
-        console.log(error);
-        return error;
-      } finally {
-        this.loading = false;
-      }
-    },
-
-    async getTopRatedDiscover(page = 1) {
-      try {
-        this.loading = true;
-        const response = await httpClient.get(
-          `discover/top_rated?api_key=${
-            import.meta.env.VITE_APP_KEY
-          }&page=${page}`
-        );
-        this.discoverData = response.data;
-      } catch (error) {
-        console.log(error);
-        return error;
-      } finally {
-        this.loading = false;
-      }
-    },
-
-    async getUpcomingDiscover(page = 1) {
-      try {
-        this.loading = true;
-        const response = await httpClient.get(
-          `discover/upcoming?api_key=${
-            import.meta.env.VITE_APP_KEY
-          }&page=${page}`
-        );
-        this.discoverData = response.data;
-      } catch (error) {
-        console.log(error);
-        return error;
-      } finally {
-        this.loading = false;
-      }
-    },
-
-    async getDiscoverDetails(id) {
-      try {
-        this.loading = true;
-        const response = await httpClient.get(
-          `discover/${id}?api_key=${import.meta.env.VITE_APP_KEY}`
-        );
-        this.discover = response.data;
+        this.shows = response.data;
       } catch (error) {
         console.log(error);
         return error;
@@ -123,6 +57,8 @@ export const useDiscoverStore = defineStore("discover", {
 
     resetUrlData() {
       this.discover = [];
+      this.movies = {};
+      this.shows = {};
     },
   },
 });
