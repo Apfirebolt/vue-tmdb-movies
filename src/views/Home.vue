@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div ref="container" class="container zoom-in">
     <div
       class="hero-section text-center text-white d-flex flex-column justify-content-center align-items-center mb-4"
     >
@@ -95,15 +95,38 @@ const isLoading = computed(() => movieStore.isLoading);
 const movie = computed(() => movieStore.movie);
 const show = computed(() => showStore.show);
 
+const container = ref(null);
+
 onMounted(() => {
   movieStore.getLatestMovies();
   showStore.getLatestShows();
+
+  // Add the zoom-in animation class
+  setTimeout(() => {
+    container.value.classList.add("zoom-in-active");
+  }, 0);
 });
 </script>
 
 <style scoped>
-.card-img-top {
-  height: 300px;
-  object-fit: cover;
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.zoom-in {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.zoom-in-active {
+  animation: zoomIn 0.5s forwards;
 }
 </style>

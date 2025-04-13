@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-3">
+  <div class="container p-3 slide-in">
     <h1>About Us</h1>
     <p>
       Welcome to our News App! This application is built using Vue.js and
@@ -28,12 +28,28 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 const showModal = ref(false);
+const containerClass = ref("");
+
+onMounted(() => {
+  containerClass.value = "slide-in";
+});
 </script>
 
 <style scoped>
+.container {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.5s ease-in-out;
+}
+
+.container.slide-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .modal.show {
   display: block;
   background-color: rgba(0, 0, 0, 0.5);
