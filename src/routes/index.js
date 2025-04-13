@@ -28,9 +28,24 @@ const routes = [
         component: () => import('../views/Movie.vue')
     },
     {
+        path: '/movie/:id',
+        name: 'MovieDetails',
+        component: () => import('../views/MovieDetail.vue')
+    },
+    {
         path: '/person',
         name: 'Person',
         component: () => import('../views/Person.vue')
+    },
+    {
+        path: '/person/:id',
+        name: 'PersonDetails',
+        component: () => import('../views/PersonDetail.vue')
+    },
+    {
+        path: '/discover',
+        name: 'Discover',
+        component: () => import('../views/Discover.vue')
     },
     {
         path: '/:catchAll(.*)',

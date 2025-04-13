@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-4 p-3">
+  <div class="container p-3">
     <h1>About Us</h1>
     <p>
       Welcome to our News App! This application is built using Vue.js and
@@ -7,7 +7,7 @@
     </p>
     <button class="btn btn-primary" @click="showModal = !showModal">Show Info</button>
 
-    <div class="modal fade" tabindex="-1" :class="{ show: showModal }" style="display: block;" v-if="showModal">
+    <div class="modal fade text-primary" tabindex="-1" :class="{ show: showModal }" style="display: block;" v-if="showModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
