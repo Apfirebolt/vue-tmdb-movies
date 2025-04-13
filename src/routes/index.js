@@ -58,6 +58,11 @@ const routes = [
         component: () => import('../views/Discover.vue')
     },
     {
+        path: '/trending',
+        name: 'Trending',
+        component: () => import('../views/Trending.vue')
+    },
+    {
         path: '/:catchAll(.*)',
         name: '404',
         component: NotFound

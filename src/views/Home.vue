@@ -89,7 +89,6 @@ import Loader from "../components/Loader.vue";
 
 const movieStore = useMovieStore();
 const showStore = useShowStore();
-const searchQuery = ref("");
 library.add(faSearch, faArrowCircleLeft, faArrowAltCircleRight);
 
 const isLoading = computed(() => movieStore.isLoading);
