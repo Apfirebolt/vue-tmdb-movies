@@ -102,7 +102,7 @@
             Poster not available
           </div>
           <div class="card-body">
-            <h5 class="card-title">{{ movie.name }}</h5>
+            <h5 class="card-title bg-secondary text-white text-center py-2 px-3">{{ movie.original_title }}</h5>
             <p class="card-text">
               <strong>Media Type:</strong> {{ movie.media_type || "N/A" }}
             </p>
@@ -112,6 +112,12 @@
             <p class="card-text">
               <strong>Release Date:</strong> {{ movie.release_date || "N/A" }}
             </p>
+            <RouterLink
+              :to="{ name: 'MovieDetails', params: { id: movie.id } }"
+              class="btn btn-primary text-white w-100"
+            >
+              View Details
+            </RouterLink>
           </div>
         </div>
       </div>
