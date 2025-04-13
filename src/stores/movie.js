@@ -40,7 +40,6 @@ export const useMovieStore = defineStore("movie", {
       try {
         this.loading = true;
         const response = await httpClient.get(`movie/latest?api_key=${import.meta.env.VITE_APP_KEY}`);
-        console.log(response.data);
         this.movie = response.data;
       } catch (error) {
         console.log(error);

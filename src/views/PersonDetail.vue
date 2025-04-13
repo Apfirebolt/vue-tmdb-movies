@@ -6,9 +6,6 @@
       <h1 class="bg-primary bg-opacity-50 px-3 py-2 rounded w-100">
         {{ personData?.name || "Person Details" }}
       </h1>
-      <p class="px-3 py-2 rounded">
-        This page displays detailed information about the person.
-      </p>
     </div>
 
     <Loader v-if="isLoading" />
@@ -51,7 +48,68 @@
         </div>
       </div>
     </div>
-    <div v-if="personImages.profiles && personImages.profiles.length" class="row mt-4">
+
+    <div class="col-12 mt-4">
+        <ul class="nav nav-tabs" id="movieDetailsTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              :class="[
+                'nav-link',
+                selectedTab === 'images' ? 'active' : '',
+              ]"
+              id="images-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#images"
+              type="button"
+              role="tab"
+              aria-controls="images"
+              aria-selected="true"
+              @click="selectTab('images')"
+
+            >
+              Images
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              :class="[
+                'nav-link',
+                selectedTab === 'tagged-images' ? 'active' : '',
+              ]"
+              id="tagged-images-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#tagged-images"
+              type="button"
+              role="tab"
+              aria-controls="tagged-images"
+              aria-selected="false"
+              @click="selectTab('tagged-images')"
+            >
+              Tagged Images
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              :class="[
+                'nav-link',
+                selectedTab === 'credits' ? 'active' : '',
+              ]"
+              id="credits-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#credits"
+              type="button"
+              role="tab"
+              aria-controls="credits"
+              aria-selected="false"
+              @click="selectTab('credits')"
+            >
+              Movie Credits
+            </button>
+          </li>
+        </ul>
+      </div>
+
+    <div v-if="selectedTab === 'images' && personImages.profiles && personImages.profiles.length" class="row mt-4">
       <h3 class="text-center mb-3">Images</h3>
       <div
       v-for="(image, index) in personImages.profiles"
@@ -65,11 +123,8 @@
       />
       </div>
     </div>
-    <div v-else class="text-center mt-4">
-      <p>No images available for this person.</p>
-    </div>
 
-    <div v-if="taggedImages.results && taggedImages.results.length" class="row mt-4">
+    <div v-if="selectedTab === 'tagged-images' && taggedImages.results && taggedImages.results.length" class="row mt-4">
       <h3 class="text-center mb-3">Tagged Images</h3>
       <div
         v-for="(image, index) in taggedImages.results"
@@ -84,7 +139,7 @@
       </div>
     </div>
 
-    <div v-if="credits.cast && credits.cast.length" class="row mt-4">
+    <div v-if="selectedTab === 'credits' && credits.cast && credits.cast.length" class="row mt-4">
       <h3 class="text-center mb-3">Movie Credits</h3>
       <div
         v-for="(movie, index) in credits.cast"
@@ -102,7 +157,7 @@
             Poster not available
           </div>
           <div class="card-body">
-            <h5 class="card-title bg-secondary text-white text-center py-2 px-3">{{ movie.original_title }}</h5>
+            <h5 class="card-title bg-secondary text-white text-center py-2 px-3">{{ movie.original_title ? movie.original_title : "Not available" }}</h5>
             <p class="card-text">
               <strong>Media Type:</strong> {{ movie.media_type || "N/A" }}
             </p>
@@ -137,6 +192,7 @@ import Loader from "../components/Loader.vue";
 
 const personStore = usePersonStore();
 const route = useRoute();
+const selectedTab = ref("images");
 const personImages = ref({});
 const taggedImages = ref({});
 const credits = ref({});
@@ -144,6 +200,10 @@ const personId = route.params.id; // Assuming the route parameter is named 'id'
 
 const isLoading = computed(() => personStore.isLoading);
 const personData = computed(() => personStore.getPerson);
+
+const selectTab = (tab) => {
+  selectedTab.value = tab;
+};
 
 const getPersonImages = (personId) => {
   httpClient
