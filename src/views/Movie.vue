@@ -38,7 +38,7 @@
           <div class="card-body">
             <h5 class="card-title">{{ movie.title }}</h5>
             <p class="card-text">{{ movie.overview }}</p>
-            <router-link :to="{ name: 'MovieDetails', params: { id: movie.id } }" class="btn btn-primary">
+            <router-link :to="{ name: 'MovieDetails', params: { id: movie.id } }" class="btn text-white btn-primary">
               View Details
             </router-link>
           </div>

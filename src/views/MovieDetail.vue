@@ -13,9 +13,15 @@
         }}
       </p>
       <p>
-        Countries : 
-        <span v-for="(country, index) in movie?.production_countries" :key="index">
-          {{ country.name }}<span v-if="index < movie?.production_countries.length - 1">, </span>
+        Countries :
+        <span
+          v-for="(country, index) in movie?.production_countries"
+          :key="index"
+        >
+          {{ country.name
+          }}<span v-if="index < movie?.production_countries.length - 1"
+            >,
+          </span>
         </span>
       </p>
     </div>
@@ -83,24 +89,117 @@
           >
         </div>
       </div>
+
+      <div class="col-12 mt-4">
+        <h3>Videos</h3>
+        <div class="row">
+          <div
+            v-for="(video, index) in movieVideos.results"
+            :key="index"
+            class="col-md-4 mb-3"
+          >
+            <div class="card bg-dark text-white">
+              <iframe
+                v-if="video.site === 'YouTube'"
+                :src="'https://www.youtube.com/embed/' + video.key"
+                class="card-img-top"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+              <div
+                v-else
+                class="card-img-top d-flex justify-content-center align-items-center bg-secondary text-white"
+                style="height: 200px"
+              >
+                Video not available
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">{{ video.name }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 mt-4">
+        <h3>Posters</h3>
+        <div class="row">
+          <div
+            v-for="(poster, index) in movieImages.posters"
+            :key="index"
+            class="col-md-3 mb-3"
+          >
+            <div v-if="poster.file_path" class="card bg-info text-white">
+              <img
+                :src="'https://image.tmdb.org/t/p/w500' + poster.file_path"
+                class="card-img-top img-fluid"
+                :alt="poster.file_path"
+              />
+            </div>
+            <div
+              v-else
+              class="card-img-top d-flex justify-content-center align-items-center bg-secondary text-white"
+              style="height: 300px"
+            >
+              Image not available
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, computed } from "vue";
+import { onMounted, ref, computed } from "vue";
+import httpClient from "../plugins/interceptor";
 import { useRoute } from "vue-router";
 import { useMovieStore } from "../stores/movie";
 import Loader from "../components/Loader.vue";
 
 const route = useRoute();
 const movieStore = useMovieStore();
+const movieImages = ref({});
+const movieVideos = ref({});
 const isLoading = computed(() => movieStore.isLoading);
 const movie = computed(() => movieStore.getMovie);
+
+const getMovieImages = (movieId) => {
+  httpClient
+    .get(`/movie/${movieId}/images`, {
+      params: {
+        api_key: import.meta.env.VITE_APP_KEY,
+      },
+    })
+    .then((response) => {
+      movieImages.value = response.data;
+    })
+    .catch((error) => {
+      console.error("Error fetching movie images:", error);
+    });
+};
+
+const getMovieVideos = (movieId) => {
+  httpClient
+    .get(`/movie/${movieId}/videos`, {
+      params: {
+        api_key: import.meta.env.VITE_APP_KEY,
+      },
+    })
+    .then((response) => {
+      movieVideos.value = response.data;
+    })
+    .catch((error) => {
+      console.error("Error fetching movie videos:", error);
+    });
+};
 
 onMounted(() => {
   const movieId = route.params.id; // Get the movie ID from the route
   movieStore.getMovieDetails(movieId);
+  getMovieImages(movieId);
+  getMovieVideos(movieId);
 });
 </script>
 

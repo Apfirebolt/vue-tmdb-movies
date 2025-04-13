@@ -51,25 +51,60 @@
         </div>
       </div>
     </div>
+    <div v-if="personImages.profiles && personImages.profiles.length" class="row mt-4">
+      <h3 class="text-center mb-3">Images</h3>
+      <div
+      v-for="(image, index) in personImages.profiles"
+      :key="index"
+      class="col-md-3 mb-3"
+      >
+      <img
+        :src="'https://image.tmdb.org/t/p/w500' + image.file_path"
+        class="img-fluid rounded"
+        :alt="'Image ' + (index + 1)"
+      />
+      </div>
+    </div>
+    <div v-else class="text-center mt-4">
+      <p>No images available for this person.</p>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
+import httpClient from "../plugins/interceptor";
 import { useRoute } from "vue-router";
 import { usePersonStore } from "../stores/person";
 import Loader from "../components/Loader.vue";
 
 const personStore = usePersonStore();
 const route = useRoute();
+const personImages = ref({});
 const personId = route.params.id; // Assuming the route parameter is named 'id'
 
 const isLoading = computed(() => personStore.isLoading);
-const personData = computed(() => personStore.getPersonDetail);
+const personData = computed(() => personStore.getPerson);
+
+const getPersonImages = (personId) => {
+  httpClient
+    .get(`/person/${personId}/images`, {
+      params: {
+        api_key: import.meta.env.VITE_APP_KEY,
+      },
+    })
+    .then((response) => {
+      personImages.value = response.data;
+    })
+    .catch((error) => {
+      console.error("Error fetching person images:", error);
+    });
+};
 
 onMounted(() => {
   if (personId) {
-    personStore.getPersonDetails(personId); // Fetch person details by ID
+    personStore.getPersonDetails(personId);
+    getPersonImages(personId);
   }
 });
 </script>
