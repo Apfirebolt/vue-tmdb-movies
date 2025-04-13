@@ -50,81 +50,176 @@
     </div>
 
     <div class="col-12 mt-4">
-        <ul class="nav nav-tabs" id="movieDetailsTab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button
-              :class="[
-                'nav-link',
-                selectedTab === 'images' ? 'active' : '',
-              ]"
-              id="images-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#images"
-              type="button"
-              role="tab"
-              aria-controls="images"
-              aria-selected="true"
-              @click="selectTab('images')"
+      <ul class="nav nav-tabs" id="movieDetailsTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            :class="['nav-link', selectedTab === 'images' ? 'active' : '']"
+            id="images-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#images"
+            type="button"
+            role="tab"
+            aria-controls="images"
+            aria-selected="true"
+            @click="selectTab('images')"
+          >
+            Images
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            :class="[
+              'nav-link',
+              selectedTab === 'tagged-images' ? 'active' : '',
+            ]"
+            id="tagged-images-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#tagged-images"
+            type="button"
+            role="tab"
+            aria-controls="tagged-images"
+            aria-selected="false"
+            @click="selectTab('tagged-images')"
+          >
+            Tagged Images
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            :class="['nav-link', selectedTab === 'credits' ? 'active' : '']"
+            id="credits-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#credits"
+            type="button"
+            role="tab"
+            aria-controls="credits"
+            aria-selected="false"
+            @click="selectTab('credits')"
+          >
+            Movie Credits
+          </button>
+        </li>
+      </ul>
+    </div>
 
-            >
-              Images
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button
-              :class="[
-                'nav-link',
-                selectedTab === 'tagged-images' ? 'active' : '',
-              ]"
-              id="tagged-images-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#tagged-images"
-              type="button"
-              role="tab"
-              aria-controls="tagged-images"
-              aria-selected="false"
-              @click="selectTab('tagged-images')"
-            >
-              Tagged Images
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button
-              :class="[
-                'nav-link',
-                selectedTab === 'credits' ? 'active' : '',
-              ]"
-              id="credits-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#credits"
-              type="button"
-              role="tab"
-              aria-controls="credits"
-              aria-selected="false"
-              @click="selectTab('credits')"
-            >
-              Movie Credits
-            </button>
-          </li>
-        </ul>
+    <div
+      v-if="
+        selectedTab === 'images' &&
+        personImages.profiles &&
+        personImages.profiles.length >= 2
+      "
+      id="imageCarousel"
+      class="carousel slide mt-4"
+      data-bs-ride="carousel"
+    >
+      <div class="carousel-inner">
+        <div
+          v-for="(image, index) in personImages.profiles"
+          :key="index"
+          :class="['carousel-item', { active: index === 0 }]"
+        >
+          <img
+            :src="'https://image.tmdb.org/t/p/w500' + image.file_path"
+            class="d-block mx-auto"
+            style="max-height: 500px; width: auto"
+            :alt="'Image ' + (index + 1)"
+          />
+        </div>
       </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#imageCarousel"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#imageCarousel"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
 
-    <div v-if="selectedTab === 'images' && personImages.profiles && personImages.profiles.length" class="row mt-4">
+    <div
+      v-if="
+        selectedTab === 'tagged-images' &&
+        taggedImages.results &&
+        taggedImages.results.length >= 2
+      "
+      id="taggedImageCarousel"
+      class="carousel slide mt-4"
+      data-bs-ride="carousel"
+    >
+      <div class="carousel-inner">
+        <div
+          v-for="(image, index) in taggedImages.results"
+          :key="index"
+          :class="['carousel-item', { active: index === 0 }]"
+        >
+          <img
+            :src="'https://image.tmdb.org/t/p/w500' + image.file_path"
+            class="d-block mx-auto"
+            style="max-height: 500px; width: 650px"
+            :alt="'Tagged Image ' + (index + 1)"
+          />
+        </div>
+      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#taggedImageCarousel"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#taggedImageCarousel"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+    <div
+      v-if="
+        selectedTab === 'images' &&
+        personImages.profiles &&
+        personImages.profiles.length
+      "
+      class="row mt-4"
+    >
       <h3 class="text-center mb-3">Images</h3>
       <div
-      v-for="(image, index) in personImages.profiles"
-      :key="index"
-      class="col-md-3 mb-3"
+        v-for="(image, index) in personImages.profiles"
+        :key="index"
+        class="col-md-3 mb-3"
       >
-      <img
-        :src="'https://image.tmdb.org/t/p/w500' + image.file_path"
-        class="img-fluid rounded"
-        :alt="'Image ' + (index + 1)"
-      />
+        <img
+          :src="'https://image.tmdb.org/t/p/w500' + image.file_path"
+          class="img-fluid rounded"
+          :alt="'Image ' + (index + 1)"
+        />
       </div>
     </div>
 
-    <div v-if="selectedTab === 'tagged-images' && taggedImages.results && taggedImages.results.length" class="row mt-4">
+    <div
+      v-if="
+        selectedTab === 'tagged-images' &&
+        taggedImages.results &&
+        taggedImages.results.length
+      "
+      class="row mt-4"
+    >
       <h3 class="text-center mb-3">Tagged Images</h3>
       <div
         v-for="(image, index) in taggedImages.results"
@@ -139,7 +234,10 @@
       </div>
     </div>
 
-    <div v-if="selectedTab === 'credits' && credits.cast && credits.cast.length" class="row mt-4">
+    <div
+      v-if="selectedTab === 'credits' && credits.cast && credits.cast.length"
+      class="row mt-4"
+    >
       <h3 class="text-center mb-3">Movie Credits</h3>
       <div
         v-for="(movie, index) in credits.cast"
@@ -153,11 +251,21 @@
             class="card-img-top"
             :alt="movie.title"
           />
-          <div v-else class="card-img-top bg-secondary text-white d-flex justify-content-center align-items-center" style="height: 300px;">
+          <div
+            v-else
+            class="card-img-top bg-secondary text-white d-flex justify-content-center align-items-center"
+            style="height: 300px"
+          >
             Poster not available
           </div>
           <div class="card-body">
-            <h5 class="card-title bg-secondary text-white text-center py-2 px-3">{{ movie.original_title ? movie.original_title : "Not available" }}</h5>
+            <h5
+              class="card-title bg-secondary text-white text-center py-2 px-3"
+            >
+              {{
+                movie.original_title ? movie.original_title : "Not available"
+              }}
+            </h5>
             <p class="card-text">
               <strong>Media Type:</strong> {{ movie.media_type || "N/A" }}
             </p>
