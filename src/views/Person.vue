@@ -3,8 +3,8 @@
     <div
       class="hero-section text-center text-white d-flex flex-column justify-content-center align-items-center mb-4"
     >
-      <h1 class="bg-dark bg-opacity-50 px-3 py-2 rounded w-100">Person</h1>
-      <p class="bg-dark bg-opacity-50 px-3 py-2 rounded">
+      <h1 class="bg-primary bg-opacity-50 px-3 py-2 rounded w-100">Person</h1>
+      <p class="px-3 py-2 rounded">
         This page displays details about a person from the API
       </p>
     </div>
@@ -17,7 +17,7 @@
         v-for="person in personData.results"
         :key="person.id"
       >
-        <div class="card">
+        <div class="card bg-info text-white">
           <img
             :src="'https://image.tmdb.org/t/p/w500' + person.profile_path"
             class="card-img-top"

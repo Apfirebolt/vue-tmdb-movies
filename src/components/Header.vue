@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="vertical-navbar" v-if="!isSmallScreen">
+    <nav class="vertical-navbar bg-primary" v-if="!isSmallScreen">
       <div class="navbar-container">
         <ul class="navbar-nav">
           <li v-for="item in menuItems" :key="item.path" class="nav-item">
@@ -16,7 +16,7 @@
       <i class="menu-icon" @click="toggleSidebar">
         <font-awesome-icon icon="fa-solid fa-bars" />
       </i>
-      <nav class="mobile-sidebar" :class="{ open: isSidebarOpen }">
+      <nav class="mobile-sidebar bg-primary" :class="{ open: isSidebarOpen }">
         <div class="mobile-navbar-container">
           <ul class="mobile-navbar-nav">
             <li v-for="item in menuItems" :key="item.path" class="mobile-nav-item">
@@ -81,7 +81,6 @@ onUnmounted(() => {
   left: 0;
   transform: translateY(-50%);
   width: 10%;
-  background-color: #282f69;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -97,8 +96,6 @@ onUnmounted(() => {
   left: -100%;
   width: 50%;
   height: 100%;
-  background-color: #282f69;
-  color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
