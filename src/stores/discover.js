@@ -44,7 +44,7 @@ export const useDiscoverStore = defineStore("discover", {
       try {
         this.loading = true;
         const response = await httpClient.get(
-          `discover/tv?query=${payload.query}&api_key=${import.meta.env.VITE_APP_KEY}`
+          `discover/tv?year=${payload.year}&page=${payload.page}&api_key=${import.meta.env.VITE_APP_KEY}`
         );
         this.shows = response.data;
       } catch (error) {
