@@ -47,6 +47,7 @@ const menuItems = [
   { name: "Movie", path: "/movie", icon: "fa-film" },
   { name: "Person", path: "/person", icon: "fa-user" },
   { name: "Discover", path: "/discover", icon: "fa-search-location" },
+  { name: "Show", path: "/show", icon: "fa-film" },
   { name: "Trending", path: "/trending", icon: "fa-chart-line" },
 ];
 
