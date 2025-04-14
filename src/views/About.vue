@@ -15,7 +15,7 @@
             <button type="button" class="btn-close" @click="showModal = false"></button>
           </div>
           <div class="modal-body">
-            <p>This application is built using Vue.js, Bootstrap, and the News API.</p>
+            <p>This application is built using Vue.js, Bootstrap, and the TMDB API.</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" @click="showModal = false">Close</button>
