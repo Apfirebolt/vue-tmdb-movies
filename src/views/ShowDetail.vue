@@ -176,7 +176,149 @@
         </ul>
       </div>
 
-      <!-- Add similar sections for images, videos, reviews, etc. --> 
+      <!-- Add similar sections for images, videos, reviews, etc. -->
+      <div v-if="selectedTab === 'images'" class="mt-4">
+        <h3>Backdrop Images</h3>
+        <div v-if="showImages.backdrops && showImages.backdrops.length">
+          <div
+            id="imageCarousel"
+            class="carousel slide"
+            data-bs-ride="carousel"
+          >
+            <div class="carousel-inner">
+              <div
+                v-for="(image, index) in showImages.backdrops"
+                :key="index"
+                :class="['carousel-item', { active: index === 0 }]"
+              >
+                <img
+                  :src="'https://image.tmdb.org/t/p/w500' + image.file_path"
+                  class="d-block w-100"
+                  :alt="'Backdrop ' + (index + 1)"
+                />
+              </div>
+            </div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#imageCarousel"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#imageCarousel"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+        <p v-else>No images available for this show.</p>
+      </div>
+      <div v-if="selectedTab === 'images'" class="mt-4">
+        <h3>Images</h3>
+        <div v-if="showImages.backdrops && showImages.backdrops.length">
+          <div class="row">
+            <div
+              v-for="(image, index) in showImages.backdrops"
+              :key="index"
+              class="col-md-4 mb-3"
+            >
+              <img
+                :src="'https://image.tmdb.org/t/p/w500' + image.file_path"
+                class="img-fluid rounded"
+                :alt="'Backdrop ' + (index + 1)"
+              />
+            </div>
+          </div>
+        </div>
+        <p v-else>No images available for this show.</p>
+      </div>
+
+      <!--Videos-->
+      <div v-if="selectedTab === 'videos'" class="mt-4">
+        <h3>Videos</h3>
+        <div v-if="showVideos.results && showVideos.results.length">
+          <div class="row">
+            <div
+              v-for="(video, index) in showVideos.results"
+              :key="index"
+              class="col-md-4 mb-3"
+            >
+              <iframe
+                :src="'https://www.youtube.com/embed/' + video.key"
+                width="100%"
+                height="200"
+                frameborder="0"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
+        <p v-else>No videos available for this show.</p>
+      </div>
+
+      <!--Reviews-->
+      <div v-if="selectedTab === 'reviews'" class="mt-4">
+        <h3>Reviews</h3>
+        <div v-if="showReviews.results && showReviews.results.length">
+          <div class="row">
+            <div
+              v-for="(review, index) in showReviews.results"
+              :key="index"
+              class="col-md-4 mb-3"
+            >
+              <div class="card bg-light text-dark p-3">
+                <h5>{{ review.author }}</h5>
+                <p>{{ review.content }}</p>
+                <p>
+                  <strong>Created at:</strong>
+                  {{ formatDate(review.created_at) }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p v-else>No reviews available for this show.</p>
+      </div>
+
+      <!-- Similar Shows -->
+      <div v-if="selectedTab === 'recommendations'" class="mt-4">
+        <h3>Similar Shows</h3>
+        <div v-if="similarShows.results && similarShows.results.length">
+          <div class="row">
+            <div
+              v-for="(show, index) in similarShows.results"
+              :key="index"
+              class="col-md-4 mb-3"
+            >
+              <div class="card bg-light text-dark p-3">
+                <img
+                  :src="'https://image.tmdb.org/t/p/w500' + show.poster_path"
+                  class="card-img-top img-fluid"
+                  :alt="show.name"
+                />
+                <h5 class="px-2 py-3 bg-primary text-white text-center">
+                  {{ show.name }}
+                </h5>
+                <p>{{ show.overview }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p v-else>No similar shows available.</p>
+      </div>
     </div>
   </div>
 </template>
