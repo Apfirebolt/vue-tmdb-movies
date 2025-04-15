@@ -35,11 +35,11 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faHome, faInfoCircle, faFilm, faUser, faBars, faSearchLocation, faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faInfoCircle, faFilm, faUser, faBars, faSearchLocation, faChartLine, faStar } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 
 // Add icons to the library
-library.add(faHome, faInfoCircle, faFilm, faUser, faBars, faSearchLocation, faChartLine);
+library.add(faHome, faInfoCircle, faFilm, faUser, faBars, faSearchLocation, faChartLine, faStar);
 
 const menuItems = [
   { name: "Home", path: "/", icon: "fa-home" },
@@ -48,6 +48,7 @@ const menuItems = [
   { name: "Person", path: "/person", icon: "fa-user" },
   { name: "Discover", path: "/discover", icon: "fa-search-location" },
   { name: "Show", path: "/show", icon: "fa-film" },
+  { name: "Collection", path: "/collection", icon: "fa-star" },
   { name: "Trending", path: "/trending", icon: "fa-chart-line" },
 ];
 
