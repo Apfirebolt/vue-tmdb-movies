@@ -63,20 +63,19 @@
             <p class="card-text">
               {{ collection.overview || "No description available." }}
             </p>
-            <button
+            <router-link
+              :to="{ name: 'CollectionDetails', params: { id: collection.id } }"
               class="btn text-white btn-primary"
-              @click="viewCollectionDetails(collection.id)"
+              >View Details</router-link
             >
-              View Details
-            </button>
           </div>
         </div>
       </div>
     </div>
 
     <div v-if="!isLoading && collectionData.length === 0" class="text-center">
-        <h2>No Results Available</h2>
-        <p>We couldn't find any collections matching your search.</p>
+      <h2>No Results Available</h2>
+      <p>We couldn't find any collections matching your search.</p>
     </div>
 
     <div class="d-flex justify-content-center my-3">
@@ -93,7 +92,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   faSearch,

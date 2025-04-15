@@ -94,6 +94,12 @@ onUnmounted(() => {
   border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+@media (min-width: 768px) and (max-width: 1024px) {
+  .vertical-navbar {
+    width: 20%;
+  }
+}
+
 .mobile-sidebar {
   position: fixed;
   top: 0;
