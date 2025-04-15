@@ -76,7 +76,6 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   faSearch,
   faArrowCircleLeft,

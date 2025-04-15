@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { mount } from "@vue/test-utils";
-import { ref } from "vue";
 import Footer from "../components/Footer.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
@@ -75,5 +74,3 @@ import {
   faYoutube,
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
-
-const currentYear = ref(new Date().getFullYear());

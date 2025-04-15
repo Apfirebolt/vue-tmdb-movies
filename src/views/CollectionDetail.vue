@@ -70,9 +70,9 @@
               <div class="card-body">
                 <h5 class="card-title">{{ movie.title }}</h5>
                 <p class="card-text">
-                  <strong>Release Date:</strong>
-                  {{ movie.release_date || "N/A" }}
+                  <strong>Release Date: {{ movie.release_date }}</strong>
                 </p>
+                
                 <router-link
                   :to="{ name: 'MovieDetails', params: { id: movie.id } }"
                   class="btn btn-primary text-white"
@@ -90,34 +90,19 @@
 
 <script setup>
 import { onMounted, ref, computed } from "vue";
-import httpClient from "../plugins/interceptor";
+import { useCollectionStore } from "../stores/collection";
+import vFormatDate from "../directives/formatDate";
 import { useRoute } from "vue-router";
 import Loader from "../components/Loader.vue";
 
+const collectionStore = useCollectionStore();
 const route = useRoute();
-const collection = ref({});
-const isLoading = ref(true);
-
-const getCollectionDetails = (collectionId) => {
-  httpClient
-    .get(`/collection/${collectionId}`, {
-      params: {
-        api_key: import.meta.env.VITE_APP_KEY,
-      },
-    })
-    .then((response) => {
-      collection.value = response.data;
-      isLoading.value = false;
-    })
-    .catch((error) => {
-      console.error("Error fetching collection details:", error);
-      isLoading.value = false;
-    });
-};
+const collection = computed(() => collectionStore.getCollection);
+const isLoading = computed(() => collectionStore.isLoading);
 
 onMounted(() => {
   const collectionId = route.params.id; // Get the collection ID from the route
-  getCollectionDetails(collectionId);
+  collectionStore.getCollectionDetails(collectionId)
 });
 </script>
 
