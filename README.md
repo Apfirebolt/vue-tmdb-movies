@@ -50,6 +50,10 @@ Please find some of the screenshots below
 - Error handling and loading indicators for better usability.
 - Continuous updates with the latest features and improvements.
 
+## Updates 
+
+- May 2025 : AG Grid added for Movie details page to show similar movies in tabular format.
+
 ## Built With
 
 * [Vue 3](https://vuejs.org//)

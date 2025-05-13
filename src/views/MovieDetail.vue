@@ -173,8 +173,8 @@
         </ul>
       </div>
 
-       <!-- Slideshow for trailers -->
-       <div
+      <!-- Slideshow for trailers -->
+      <div
         v-if="
           selectedTab === 'videos' &&
           movieVideos.results &&
@@ -412,6 +412,17 @@
               </div>
             </div>
           </div>
+          <!-- Similar Movies AG Grid Table view -->
+
+          <ag-grid-vue
+            class="ag-theme-alpine"
+            style="width: 100%; height: 400px"
+            :columnDefs="columnDefs"
+            :rowData="similarMovies.results"
+            :modules="modules"
+            :defaultColDef="defaultColDef"
+            :gridOptions="gridOptions"
+          />
         </div>
         <div v-else>
           <p>No similar movies available.</p>
@@ -423,10 +434,16 @@
 
 <script setup>
 import { onMounted, ref, computed } from "vue";
+import "@ag-grid-community/styles/ag-grid.css";
+import "@ag-grid-community/styles/ag-theme-alpine.css";
+import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
+import { AgGridVue } from "@ag-grid-community/vue3";
 import httpClient from "../plugins/interceptor";
 import { useRoute } from "vue-router";
 import { useMovieStore } from "../stores/movie";
 import Loader from "../components/Loader.vue";
+
+const modules = ref([ClientSideRowModelModule]);
 
 const route = useRoute();
 const movieStore = useMovieStore();
@@ -438,6 +455,32 @@ const movieProviders = ref({});
 const similarMovies = ref({});
 const isLoading = computed(() => movieStore.isLoading);
 const movie = computed(() => movieStore.getMovie);
+
+// AG Grid configuration
+const columnDefs = ref([
+  {
+    headerName: "Title",
+    field: "title",
+    sortable: true,
+    filter: true,
+  },
+  {
+    headerName: "Release Date",
+    field: "release_date",
+    sortable: true,
+    filter: true,
+  },
+  {
+    headerName: "Overview",
+    field: "overview",
+    sortable: true,
+    filter: true,
+  },
+]);
+const defaultColDef = {
+  flex: 1,
+  minWidth: 100,
+};
 
 const formatDate = (dateString) => {
   const options = { year: "numeric", month: "long", day: "numeric" };
